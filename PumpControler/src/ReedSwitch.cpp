@@ -12,12 +12,13 @@ ReedSwitch :: ReedSwitch(){
     digitalWrite(VALVE, LOW);
 }
 
-void ReedSwitch :: run(){
+void ReedSwitch :: loopSwitch(){
     timer();
     if(hasTimePassed){
     getSwitchRead();
-    }
     processData();
+    }
+    hasTimePassed = false;
 }
 
 void ReedSwitch :: timer(){
@@ -38,16 +39,22 @@ void ReedSwitch :: getSwitchRead(){
 }
 
 void ReedSwitch :: processData(){
-    if(switchs[0] && switchs[1] && switchs[2] && switchs[3]){
+    printOnSerial();
+
+    if(!switchState[0] && !switchState[1] && !switchState[2] && !switchState[3]){
+        Serial.println("Valve activated");
         activateValve();
     }
-    if(switchs[0] && switchs[1] && switchs[2] && isValveActivated == false){
+    if(!switchState[0] && !switchState[1] && !switchState[2] && isValveActivated == false){
+        Serial.println("Pump activated");
         activatePump();
     }
-    if(isValveActivated && switchs[2] == false){
+    if(isValveActivated && !switchState[2] == false){
+        Serial.println("Valve deactivated");
         deactivateValve();
     }
-    if(isPumpActivated && switchs[0] == false){
+    if(isPumpActivated && !switchState[0] == false){
+        Serial.println("Pump deactivated");
         deactivatePump();
     }
 }
@@ -70,6 +77,14 @@ void ReedSwitch :: deactivatePump(){
 void ReedSwitch :: deactivateValve(){
     digitalWrite(VALVE, LOW);
     isValveActivated = false;
+}
+
+void ReedSwitch :: printOnSerial(){
+    Serial.println("The valve levels are:");
+    for(int i = 0; i < 4; i++){
+        Serial.println(String(i) + ": " + switchState[i]);
+    }
+    Serial.println("---------------------");
 }
 
 ReedSwitch reedSwitch;

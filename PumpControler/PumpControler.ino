@@ -5,5 +5,5 @@ void setup(){
 }
 
 void loop(){
-  reedSwitch.run();
+  reedSwitch.loopSwitch();
 }

@@ -11,11 +11,11 @@
 #define PUMP 11
 #define VALVE 6
 
-#define TIME 100
+#define TIME 1000
 
 class ReedSwitch{
     public:
-    void run();
+    void loopSwitch();
     ReedSwitch();
 
     private:
@@ -26,6 +26,7 @@ class ReedSwitch{
     void activateValve();
     void deactivatePump();
     void deactivateValve();
+    void printOnSerial();
 
     bool hasTimePassed = false;
     bool isPumpActivated = false;
